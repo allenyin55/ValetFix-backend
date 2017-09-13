@@ -3,16 +3,19 @@
 var stripe = require("stripe")(process.env.SECRET_KEY);
 
 function Charge(req, res, next){
+
+  const { amount, payToken, acctId } = req.body;
+
   stripe.charges.create({
-    amount: req.body.amount,
+    amount: amount,
     currency: "usd",
-    source: req.body.payToken,
+    source: payToken,
   }, {
-    stripe_account: req.body.acctId,
+    stripe_account: acctId,
   }).then(function(charge) {
     // asynchronously called
     if(charge.paid === true){
-      res.send(JSON.stringify(charge))
+      res.json(charge)
     }
   })
   .catch(function (err) {

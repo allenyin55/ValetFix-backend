@@ -12,7 +12,7 @@ function ManagedAccount(req, res, next){
     type: "custom"
   }).then(function(acct) {
     // asynchronously called
-    res.send(acct)
+    res.json(acct)
   })
   .catch((err) => {
     console.log(err)
