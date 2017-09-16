@@ -4,7 +4,6 @@
 const stripe = require("stripe")(process.env.SECRET_KEY);
 
 function Update(req, res, next){
-
   const { email, acctId, day, month, year, first, last } = req.body;
   
   // legal_entity_address and last 4 ssn
@@ -44,6 +43,10 @@ function Update(req, res, next){
       // asynchronously called
       if (account.email != false){
         res.json(account)
+      }
+      else {
+        console.log(err);
+        res.send("Something went wrong while updating manged account!")
       }
     }
   );

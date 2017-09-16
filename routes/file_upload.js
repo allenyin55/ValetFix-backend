@@ -1,10 +1,8 @@
 const fs = require('fs');
+const stripe = require('stripe')(process.env.SECRET_KEY);
 
 function FileUpload(req, res, next){
-
-  const {secretKey, acctId, file} = req.body
-
-  const stripe = require('stripe')(secretKey);
+  const {acctId, file} = req.body
 
   stripe.fileUploads.create(
     {
@@ -12,10 +10,19 @@ function FileUpload(req, res, next){
       file: {
         data: fs.readFileSync(file),
         // Not Sure what the name should be
-        name: 'file_name.jpg',
+        name: 'file.jpg',
         type: 'application/octet-stream'
       }
-    },
-    {stripe_account: acctId}
-  )
+    }, function(err, fileUpload) {
+      // asynchronously called
+      if (err){
+        console.log(err)
+        res.send("Something went wrong while uploading the file")
+      }
+      else{
+        res.send(fileUpload)
+      }
+    });
 }
+
+module.exports = FileUpload;

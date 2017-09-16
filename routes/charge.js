@@ -3,7 +3,6 @@
 var stripe = require("stripe")(process.env.SECRET_KEY);
 
 function Charge(req, res, next){
-
   const { amount, payToken, acctId } = req.body;
 
   stripe.charges.create({
@@ -20,7 +19,7 @@ function Charge(req, res, next){
   })
   .catch(function (err) {
     console.log(err)
-    res.status(402).send("Somehting Wrong!")
+    res.status(402).send("Somehting Wrong while creating a charge to the account!")
   });
 }
 
