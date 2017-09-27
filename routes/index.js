@@ -12,7 +12,6 @@ const AddBankCard = require("./add_bank_card")
 const Balance = require("./balance")
 const CreateBankToken = require("./create_bank_token")
 const CreateCustomer = require("./create")
-const DeleteCustomer = require("./delete")
 const Webhook = require("./webhook")
 
 router.post("/charge", Charge);
@@ -27,7 +26,6 @@ router.post("/add-bank-card", AddBankCard);
 router.post("/balance", Balance);
 router.post("/create-bank-token", CreateBankToken);
 router.post("/create", CreateCustomer);
-router.post("/delete", DeleteCustomer);
 router.post('/webhook', Webhook);
 
 module.exports = router;
