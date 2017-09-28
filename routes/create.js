@@ -4,7 +4,8 @@ var stripe = require("stripe")(process.env.SECRET_KEY);
 
 function Create(req, res, next){
   stripe.customers.create({
-    email: res.body.email
+    email: req.body.email,
+    source: req.body.stripeToken
   },
   function(err, customer){
     if(err){

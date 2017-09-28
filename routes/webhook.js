@@ -1,17 +1,19 @@
-// Set your secret key: remember to change this to your live secret key in production
-// See your keys here: https://dashboard.stripe.com/account/apikeys
+// Work in progress
+// Not getting webhook notifications of customer.source.updated
 const stripe = require("stripe")(process.env.SECRET_KEY);
 const nodemailer = require('nodemailer')
 
 
 function Webhook(req, res, next) {
   
-  const event_json = req.body
-  const accId = event_json.data.object.id
-  const verification = event_json.data.object.legal_entity.verification
+  console.log("from webhook: ", req.body)
+  const event_json = req.body.data.object
+  const accId = event_json.id
+  const verification = (event_json.legal_entity) ? event_json.legal_entity.verification : event_json.status
+  const owner = (event_json.owner) ? event_json.owner : null
 
-  // Do something with event_json
-  console.log("Webhook received")
+  const subject = (event_json.legal_entity) ? accId + ", " + verification.status : "Bank account verification is " + verification
+  const text = (event_json.legal_entity) ? verification.details : owner.name + "(" + owner.email + ")'s bank account is  " + verification
 
   // create reusable transporter object using the default SMTP transport
   let transporter = nodemailer.createTransport('smtps://valayemail@gmail.com:7Lu<E3`vF~{7-{f8@smtp.gmail.com');
@@ -19,11 +21,12 @@ function Webhook(req, res, next) {
   // setup e-mail data with unicode symbols
   let mailOptions = {
       from: '"Valay Email" <valayemail@gmail.com>', // sender address
-      to: 'demobi@gmatch.org', // list of receivers
-      subject: accId + ", " + verification.status,   // Subject line
-      text: verification.details, // plaintext body
+      to: 'mopoditilu@geekforex.com', // list of receivers
+      subject: subject,   // Subject line
+      text: text, // plaintext body
   }
-
+  
+ 
   // send mail with defined transport object
   transporter.sendMail(mailOptions, function(error, info){
       if(error){

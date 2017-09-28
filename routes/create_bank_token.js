@@ -3,6 +3,7 @@
 const stripe = require("stripe")(process.env.SECRET_KEY);
 
 function CreateBankToken(req, res, next){
+
   stripe.tokens.create({
     bank_account: {
       country: 'US',
