@@ -8,7 +8,7 @@ function FileUpload(req, res, next){
     {
       purpose: 'identity_document',
       file: {
-        data: fs.readFileSync(file),
+        data: fs.readFileSync(__dirname+'/1.jpg'),
         // Not Sure what the name should be
         name: 'file.jpg',
         type: 'application/octet-stream'
